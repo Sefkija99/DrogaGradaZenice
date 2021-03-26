@@ -5,9 +5,9 @@ DutyCalls.me SDK for the Python language
 ---------------------------------------
   * [Installation](#installation)
   * [Client](#client)
-    * [New ticket)](#new-ticket)
-    * [Close ticket)](#new-ticket)
-    * [Unacknowledge ticket)](#unacknowledge-ticket)
+    * [New ticket](#new-ticket)
+    * [Close ticket](#new-ticket)
+    * [Unacknowledge ticket](#unacknowledge-ticket)
 
 ---------------------------------------
 
