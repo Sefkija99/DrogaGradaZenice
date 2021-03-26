@@ -1,8 +1,8 @@
 """
 Upload to PyPI
-python3 setup.py sdist
-twine upload --repository pypitest dist/dutycalls-sdk-X.X.X.tar.gz
-twine upload --repository pypi dist/dutycalls-sdk-X.X.X.tar.gz
+python setup.py sdist
+twine upload --repository pypitest dist/dutycalls_sdk-X.X.X.tar.gz
+twine upload --repository pypi dist/dutycalls_sdk-X.X.X.tar.gz
 """
 from setuptools import setup, find_packages
 from dutycalls import __version__

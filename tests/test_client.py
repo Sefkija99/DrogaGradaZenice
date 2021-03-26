@@ -109,4 +109,3 @@ class TestClient(unittest.TestCase):
                 'severity': 'low',
                 'sender': 'DutyCalls SDK Test',
             }))
-
