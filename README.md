@@ -17,7 +17,7 @@ DutyCalls.me SDK for the Python language
 The easiest way is to use PyPI:
 
 ```
-sudo pip install dutycalls_sdk
+pip install dutycalls_sdk
 ```
 
 ## Client
