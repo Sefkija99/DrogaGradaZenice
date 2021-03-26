@@ -6,8 +6,10 @@ import logging
 import asyncio
 import time
 import sys
+import os
 from dutycalls import Client
 from dutycalls.errors import DutyCallsAuthError, DutyCallsRequestError
+
 
 # Credentials are required
 _LOGIN = os.environ.get('DUTYCALLS_LOGIN')
@@ -30,16 +32,14 @@ class TestClient(unittest.TestCase):
 
     def test_new_ticket(self):
         client = Client(login=_LOGIN, password=_PASSWORD)
-        res = self.loop.run_until_complete(client.new_ticket('Test', {
+        ticket = self.loop.run_until_complete(client.new_ticket('Test', {
             'title': 'This is a test',
             'body': 'Just some plain text...',
             'dateTime': int(time.time()),
             'severity': 'low',
             'sender': 'DutyCalls SDK Test',
         }))
-        self.assertIsInstance(res, dict)
-        self.assertIn('tickets', res)
-        ticket = res['tickets'][0]
+        self.assertIsInstance(ticket, dict)
         ticket_id = ticket['id']
         self.assertIsInstance(ticket_id, int)
         self.assertEqual(ticket['channel'], 'Test')
@@ -50,7 +50,7 @@ class TestClient(unittest.TestCase):
 
     def test_close_ticket(self):
         client = Client(login=_LOGIN, password=_PASSWORD)
-        res = self.loop.run_until_complete(client.new_ticket('Test', {
+        ticket = self.loop.run_until_complete(client.new_ticket('Test', {
             'title': 'This is a test to close a ticket',
             'body': 'Just some plain text in a ticket which will be closed...',
             'dateTime': int(time.time()),
@@ -58,7 +58,7 @@ class TestClient(unittest.TestCase):
             'sender': 'DutyCalls SDK Test',
         }))
 
-        ticket_id = res['tickets'][0]['id']
+        ticket_id = ticket['id']
         res = self.loop.run_until_complete(client.close_ticket(
             ticket_id, "closed using the DutyCalls SDK"))
         self.assertIs(res, None)

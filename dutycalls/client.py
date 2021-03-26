@@ -22,6 +22,11 @@ class Client:
     BASE_URL = 'https://dutycalls.me/api'
 
     def __init__(self, login: str, password: str):
+        """Initialize the DutyCalls.me Client.
+
+        See https://docs.dutycalls.me/rest-api/#authentication for
+        documentation on how to get creadentials.
+        """
         authorization = BasicAuth(
             login=login,
             password=password,
@@ -67,16 +72,19 @@ class Client:
                 raise DutyCallsRequestError(errmsg)
 
     async def new_ticket(self, channel: str, ticket: dict) -> dict:
-        return await self._make_api_call(
+        """Create a new ticket and assign the ticket to a single channel."""
+        res = await self._make_api_call(
             api='ticket',
             method=METH_POST,
             params={'channel': channel},
             data=ticket
         )
+        return res['tickets'][0]
 
     async def close_ticket(
             self, ticket_id: int,
             comment: Optional[str] = None) -> None:
+        """Close a ticket."""
         data = {'status': 'closed'}
         if comment:
             data['comment'] = comment
@@ -90,6 +98,7 @@ class Client:
     async def unacknowledge_ticket(
             self, ticket_id: int,
             comment: Optional[str] = None) -> None:
+        """Unacknowledge a ticket."""
         data = {'status': 'unacknowledged'}
         if comment:
             data['comment'] = comment
