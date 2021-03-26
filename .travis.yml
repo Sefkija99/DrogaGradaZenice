@@ -1,12 +1,16 @@
 language: python
 python:
-  - "3.4"
-  - "3.5"
-  - "3.6"
+- '3.4'
+- '3.5'
+- '3.6'
 before_install:
-  - pip install pycodestyle
-  - pip install "aiohttp>=3,<4"
-  - python setup.py install
+- pip install pycodestyle
+- pip install "aiohttp>=3,<4"
+- python setup.py install
 script:
-  - pytest -v
-  - find . -name \*.py -exec pycodestyle {} +
+- pytest -v
+- find . -name \*.py -exec pycodestyle {} +
+env:
+  global:
+  - secure: b+0DxcMOj2FI82oJ/Y4qmBxq00MmpBZc0DtjDLR/6VsyNStmq81MzPkBBVWrFLe6eNgmI9MnGkwdOWsdt8SrYjb5P8b3sylcGqJJEYhr2AEEILk2C4x6ks0UvxxyU7Q73cQEg+3IBT2PBZyKdtfrH472RcSwxSKWfCj9iAcchHO44Lov03e+UqHexUeGHv29oKZoHyEhsxXUUMUI9ptw+rOZbGSZnzJvX2d7FtZ/RafC393QtZB9t8vBzg6wC/b0t/pIVwqq8OWUky12WLHD+o+yWhdBaP78s77Qe4fHd1RjV8Z2oOXZA1UEWhdL62kxlHkXny3+MADEytnLG8WZLu9D0CDd0s0OOVw0I9wkb5Zowb2rK7sCrj7LlT2IpOcPDty5jyfALkNFiLU1aMwBkficIwUfXFrngy+yMVYO69SuTdB6fYTJuOHNKnU2B08qOyqQw7FaRt3uVK/6FLOz3jb0kZx8mwPwkSB4HXWqDRAPK1PtiD5XOxDAEetxpoxPqcISXtjDCnm8Y4idtYaKiIZ/L1X+MZMYNPAF0fuDCfjNMIJljevsFtLyA2Q7qrc+Dg+o+6AOSK5wChRSYi2AxZ2rkD1M7eE+yUhoEQNhnyekUgI8HIqfX53UZn7v4B/47M+1D2qRESggBdaksyGQF/6TMyQ+ZlwgQ8zHFpK8niQ=
+  - secure: Zs+p3ogd/up/ABsW3BnxLT7X8YjlhRA6T0soi8QZ8ECQs9CkXEzDANLySF7o1/DywsvlFeXOwWQp4KHATH68Kv1ob/JWd4P3C7mWlqJhE2CQvkWjRulFqmHRFy62DvvdHckB4jtcrQMAbdR3LEmQaJh5N55ktS1vzemeGtbjv8rjmTMsOmnE0bMjJzp6u06GyZmzfzAHLo/GBDw/VMb39ZKUz/c97HsW4HUq+LAyGp0k1D01POaPuxzLEQ1uudGeowL4METlZ5Bfvybwb89ej22nU/uzsF3Agk4I89Mnlj5j9xb3NHIJqtOBooj9Y5fSjSEZ2q8TgNBp8Xdm1qxakzcYY1BQ1k4kqbkxg4BeOMamzTzI2IUWnha9xyGhxranAVQWCPoQrQ5APgtRYcclKs4bkju3fXpy8eHkd9lqLTcgx11vz6+GiAC9L++NI3phPTPFeTzxFGeEXiBboZDVbgOJhw72D5VEvHsVaaAn2tWSyBQ3bPgYBli+S+CxtytAqdpFe4e5Bz6ReK/lEjqkSIvuLb3zqc1noSA+Mvq4hH1SaPitWjZs+lrYeckhjwWFhLVA7DOObUI7Vozwj7MJqbxXO71QYzhjOArjPMCEuyxFTsE/U1knO2B2nCMZP6gF+vqPJ+R97HEwl4na8p++/RX20huISPR6uwTQlnKVisQ=
