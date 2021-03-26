@@ -5,7 +5,7 @@ twine upload --repository pypitest dist/dutycalls-sdk-X.X.X.tar.gz
 twine upload --repository pypi dist/dutycalls-sdk-X.X.X.tar.gz
 """
 from setuptools import setup, find_packages
-from thingsdb import __version__
+from dutycalls import __version__
 
 try:
     with open('README.md', 'r') as f:
