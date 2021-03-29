@@ -23,7 +23,7 @@ pip install dutycalls_sdk
 ## Client
 
 The DutyCalls.me Client needs to be initialized using a *login* and *password*.
-See [https://docs.dutycalls.me/rest-api/#authentication](https://docs.dutycalls.me/rest-api/#authentication) for instructions on how to get these credentials.
+> See [https://docs.dutycalls.me/rest-api/#authentication](https://docs.dutycalls.me/rest-api/#authentication) for instructions on how to get these credentials.
 
 Example:
 
