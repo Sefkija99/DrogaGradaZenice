@@ -71,15 +71,15 @@ class Client:
                     raise DutyCallsAuthError(errmsg)
                 raise DutyCallsRequestError(errmsg)
 
-    async def new_ticket(self, channel: str, ticket: dict) -> dict:
+    async def new_ticket(self, ticket: dict, *channels: str, ) -> dict:
         """Create a new ticket and assign the ticket to a single channel."""
         res = await self._make_api_call(
             api='ticket',
             method=METH_POST,
-            params={'channel': channel},
+            params=[('channel', channel) for channel in channels],
             data=ticket
         )
-        return res['tickets'][0]
+        return res['tickets']
 
     async def close_ticket(
             self, ticket_id: int,

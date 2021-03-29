@@ -32,13 +32,15 @@ class TestClient(unittest.TestCase):
 
     def test_new_ticket(self):
         client = Client(login=_LOGIN, password=_PASSWORD)
-        ticket = self.loop.run_until_complete(client.new_ticket('Test', {
+        tickets = self.loop.run_until_complete(client.new_ticket({
             'title': 'This is a test',
             'body': 'Just some plain text...',
             'dateTime': int(time.time()),
             'severity': 'low',
             'sender': 'DutyCalls SDK Test',
-        }))
+        }, 'Test'))
+        self.assertEqual(len(tickets), 1)
+        ticket = tickets[0]
         self.assertIsInstance(ticket, dict)
         ticket_id = ticket['id']
         self.assertIsInstance(ticket_id, int)
@@ -48,16 +50,33 @@ class TestClient(unittest.TestCase):
         except Exception:
             pass
 
+    def test_multi_channel(self):
+        client = Client(login=_LOGIN, password=_PASSWORD)
+        tickets = self.loop.run_until_complete(client.new_ticket({
+            'title': 'This is a test',
+            'body': 'Just some plain text...',
+            'dateTime': int(time.time()),
+            'severity': 'low',
+            'sender': 'DutyCalls SDK Test',
+        }, 'Test', 'xxx'))
+        self.assertEqual(len(tickets), 2)
+        for ticket in tickets:
+            ticket_id = ticket['id']
+            try:
+                self.loop.run_until_complete(client.close_ticket(ticket_id))
+            except Exception:
+                pass
+
     def test_close_ticket(self):
         client = Client(login=_LOGIN, password=_PASSWORD)
-        ticket = self.loop.run_until_complete(client.new_ticket('Test', {
+        tickets = self.loop.run_until_complete(client.new_ticket({
             'title': 'This is a test to close a ticket',
             'body': 'Just some plain text in a ticket which will be closed...',
             'dateTime': int(time.time()),
             'severity': 'low',
             'sender': 'DutyCalls SDK Test',
-        }))
-
+        }, 'Test'))
+        ticket = tickets[0]
         ticket_id = ticket['id']
         res = self.loop.run_until_complete(client.close_ticket(
             ticket_id, "closed using the DutyCalls SDK"))
@@ -76,36 +95,36 @@ class TestClient(unittest.TestCase):
                 DutyCallsRequestError,
                 r'The channel with the name: Fake, does not exist '
                 r'or is not linked to the current source.'):
-            res = self.loop.run_until_complete(client.new_ticket('Fake', {
+            res = self.loop.run_until_complete(client.new_ticket({
                 'title': 'This is a test',
                 'body': 'Just some plain text...',
                 'dateTime': int(time.time()),
                 'severity': 'low',
                 'sender': 'DutyCalls SDK Test',
-            }))
+            }, 'Fake'))
 
     def test_invalid_api_key(self):
         client = Client(login='Fake', password='Fake')
         with self.assertRaisesRegex(
                 DutyCallsAuthError,
                 r'Invalid API key provided.'):
-            res = self.loop.run_until_complete(client.new_ticket('Test', {
+            self.loop.run_until_complete(client.new_ticket({
                 'title': 'This is a test',
                 'body': 'Just some plain text...',
                 'dateTime': int(time.time()),
                 'severity': 'low',
                 'sender': 'DutyCalls SDK Test',
-            }))
+            }, 'Test'))
 
     def test_invalid_ticket(self):
         client = Client(login=_LOGIN, password=_PASSWORD)
         with self.assertRaisesRegex(
                 DutyCallsRequestError,
                 r'Invalid \'dateTime\' provided.'):
-            res = self.loop.run_until_complete(client.new_ticket('Test', {
+            self.loop.run_until_complete(client.new_ticket({
                 'title': 'This is a test',
                 'body': 'Just some plain text...',
                 'dateTime': '2020-10-01',
                 'severity': 'low',
                 'sender': 'DutyCalls SDK Test',
-            }))
+            }, 'Test'))

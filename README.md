@@ -40,10 +40,16 @@ Create a new ticket in DutyCalls.
 #### Return value
 
 ```python
-{
-   "id": 123,
-   "channel": "my-channel"
-}
+[
+    {
+        "id": 123,
+        "channel": "my-first-channel"
+    },
+    {
+        "id": 456,
+        "channel": "my-second-channel"
+    }
+]
 ```
 
 #### Example:
@@ -55,7 +61,10 @@ ticket = {
     'body': 'This is an example',
 }
 
-await client.new_ticket(channel='my-channel', ticket=ticket)
+# multiple channels are supported
+channels = 'my-first-channel', 'my-second-channel'
+
+await client.new_ticket(ticket=ticket, *channels)
 ```
 
 ### Close ticket
