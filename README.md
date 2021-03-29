@@ -6,8 +6,8 @@ DutyCalls.me SDK for the Python language
   * [Installation](#installation)
   * [Client](#client)
     * [New ticket](#new-ticket)
-    * [Close ticket](#new-ticket)
-    * [Unacknowledge ticket](#unacknowledge-ticket)
+    * [Close tickets](#close-tickets)
+    * [Unacknowledge tickets](#unacknowledge-tickets)
 
 ---------------------------------------
 
@@ -67,25 +67,9 @@ channels = 'my-first-channel', 'my-second-channel'
 await client.new_ticket(ticket=ticket, *channels)
 ```
 
-### Close ticket
+### Close tickets
 
-Close a ticket in DutyCalls.
-
-#### Return value
-
-```python
-None
-```
-
-#### Example:
-
-```python
-await client.close_ticket(ticket_id=123)
-```
-
-### Unacknowledge ticket
-
-Unacknowledge a ticket in DutyCalls.
+Close one or more ticket(s) in DutyCalls.
 
 #### Return value
 
@@ -96,5 +80,23 @@ None
 #### Example:
 
 ```python
-await client.unacknowledge_ticket(ticket_id=123)
+# Closes ticket 123 and 456. The comment argument is optional.
+await client.close_tickets(123, 456, comment='Closed by the DutyCalls SDK')
+```
+
+### Unacknowledge tickets
+
+Un-acknowledge one or more ticket(s) in DutyCalls.
+
+#### Return value
+
+```python
+None
+```
+
+#### Example:
+
+```python
+# Un-acknowledges ticket 123 and 456. The comment argument is optional.
+await client.unacknowledge_tickets(123, 456, comment='Unacknowledged by the DutyCalls SDK'))
 ```

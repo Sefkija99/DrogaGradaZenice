@@ -46,7 +46,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(ticket_id, int)
         self.assertEqual(ticket['channel'], 'Test')
         try:
-            self.loop.run_until_complete(client.close_ticket(ticket_id))
+            self.loop.run_until_complete(client.close_tickets(ticket_id))
         except Exception:
             pass
 
@@ -60,12 +60,11 @@ class TestClient(unittest.TestCase):
             'sender': 'DutyCalls SDK Test',
         }, 'Test', 'xxx'))
         self.assertEqual(len(tickets), 2)
-        for ticket in tickets:
-            ticket_id = ticket['id']
-            try:
-                self.loop.run_until_complete(client.close_ticket(ticket_id))
-            except Exception:
-                pass
+        ticket_ids = (ticket['id'] for ticket in tickets)
+        try:
+            self.loop.run_until_complete(client.close_ticket(*ticket_ids))
+        except Exception:
+            pass
 
     def test_close_ticket(self):
         client = Client(login=_LOGIN, password=_PASSWORD)
@@ -78,8 +77,8 @@ class TestClient(unittest.TestCase):
         }, 'Test'))
         ticket = tickets[0]
         ticket_id = ticket['id']
-        res = self.loop.run_until_complete(client.close_ticket(
-            ticket_id, "closed using the DutyCalls SDK"))
+        res = self.loop.run_until_complete(client.close_tickets(
+            ticket_id, comment="closed using the DutyCalls SDK"))
         self.assertIs(res, None)
 
     def test_unacknowledge_ticket(self):
@@ -87,7 +86,8 @@ class TestClient(unittest.TestCase):
             return
         client = Client(login=_LOGIN, password=_PASSWORD)
         res = self.loop.run_until_complete(client.unacknowledge_ticket(
-            _UNACK_TICKET_ID, 'unacknowledged using the DutyCalls SDK'))
+            _UNACK_TICKET_ID,
+            comment='unacknowledged using the DutyCalls SDK'))
 
     def test_invalid_channel(self):
         client = Client(login=_LOGIN, password=_PASSWORD)

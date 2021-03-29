@@ -81,10 +81,11 @@ class Client:
         )
         return res['tickets']
 
-    async def close_ticket(
-            self, ticket_id: int,
+    async def close_tickets(
+            self,
+            *ticket_ids: int,
             comment: Optional[str] = None) -> None:
-        """Close a ticket."""
+        """Close one or more a ticket(s)."""
         data = {'status': 'closed'}
         if comment:
             data['comment'] = comment
@@ -92,13 +93,14 @@ class Client:
         return await self._make_api_call(
             api='ticket',
             method=METH_PUT,
-            params={'id': ticket_id},
+            params=[('id', ticket_id) for ticket_id in ticket_ids],
             data=data)
 
-    async def unacknowledge_ticket(
-            self, ticket_id: int,
+    async def unacknowledge_tickets(
+            self,
+            *ticket_ids: int,
             comment: Optional[str] = None) -> None:
-        """Unacknowledge a ticket."""
+        """Unacknowledge one or more ticket(s)."""
         data = {'status': 'unacknowledged'}
         if comment:
             data['comment'] = comment
@@ -106,5 +108,5 @@ class Client:
         return await self._make_api_call(
             api='ticket',
             method=METH_PUT,
-            params={'id': ticket_id},
+            params=[('id', ticket_id) for ticket_id in ticket_ids],
             data=data)
