@@ -14,7 +14,6 @@ DutyCalls.me SDK for the Python language
 
 ---------------------------------------
 
-
 ## Installation
 
 The easiest way is to use PyPI:
