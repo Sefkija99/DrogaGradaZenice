@@ -42,11 +42,11 @@ Create a new ticket in DutyCalls.
 ```python
 [
     {
-        "id": 123,
+        "sid": 'XXXXXX...',
         "channel": "my-first-channel"
     },
     {
-        "id": 456,
+        "sid": 'YYYYYY...',
         "channel": "my-second-channel"
     }
 ]

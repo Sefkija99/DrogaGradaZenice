@@ -83,7 +83,7 @@ class Client:
 
     async def close_tickets(
             self,
-            *ticket_ids: int,
+            *ticket_sids: str,
             comment: Optional[str] = None) -> None:
         """Close one or more a ticket(s)."""
         data = {'status': 'closed'}
@@ -93,12 +93,12 @@ class Client:
         return await self._make_api_call(
             api='ticket',
             method=METH_PUT,
-            params=[('id', ticket_id) for ticket_id in ticket_ids],
+            params=[('sid', ticket_sid) for ticket_sid in ticket_sids],
             data=data)
 
     async def unacknowledge_tickets(
             self,
-            *ticket_ids: int,
+            *ticket_sids: str,
             comment: Optional[str] = None) -> None:
         """Unacknowledge one or more ticket(s)."""
         data = {'status': 'unacknowledged'}
@@ -108,5 +108,5 @@ class Client:
         return await self._make_api_call(
             api='ticket',
             method=METH_PUT,
-            params=[('id', ticket_id) for ticket_id in ticket_ids],
+            params=[('sid', ticket_sid) for ticket_sid in ticket_sids],
             data=data)

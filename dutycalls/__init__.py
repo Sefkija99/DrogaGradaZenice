@@ -10,4 +10,4 @@ except ImportError:
 # Set default logging handler to avoid "No handler found" warnings.
 logging.getLogger(__name__).addHandler(NullHandler())
 
-__version__ = '0.1.3'
+__version__ = '0.2.0'
