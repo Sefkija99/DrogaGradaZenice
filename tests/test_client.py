@@ -7,8 +7,11 @@ import asyncio
 import time
 import sys
 import os
-from dutycalls import Client
-from dutycalls.errors import DutyCallsAuthError, DutyCallsRequestError
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
+from dutycalls import Client  # nopep8
+from dutycalls.errors import DutyCallsAuthError, DutyCallsRequestError  # nopep8
 
 
 # Credentials are required
