@@ -1,3 +1,6 @@
+[![CI](https://github.com/transceptor-technology/python-dutycalls-sdk/workflows/CI/badge.svg)](https://github.com/transceptor-technology/python-dutycalls-sdk/actions)
+[![Release Version](https://img.shields.io/github/release/transceptor-technology/python-dutycalls-sdk)](https://github.com/transceptor-technology/python-dutycalls-sdk/releases)
+
 # Dutycalls.me SDK
 
 DutyCalls.me SDK for the Python language
