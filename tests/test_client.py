@@ -14,12 +14,15 @@ from dutycalls import Client  # nopep8
 from dutycalls.errors import DutyCallsAuthError, DutyCallsRequestError  # nopep8
 
 
-# Credentials are required
+# Credentials are required.
 _LOGIN = os.environ.get('DUTYCALLS_LOGIN')
 _PASSWORD = os.environ.get('DUTYCALLS_PASSWORD')
 
-# Ticket SID for testing unacknowledge
-_UNACK_TICKET_SID = int(os.environ.get('DUTYCALLS_TICKET_SID', 0))
+# A channel name. Used for testing ticket creation.
+_CHANNEL_NAME = os.environ.get('DUTYCALLS_CHANNEL_NAME')
+
+# A ticket SID. Used for several tests.
+_UNACK_TICKET_SID = os.environ.get('DUTYCALLS_TICKET_SID')
 
 
 class TestClient(unittest.TestCase):
@@ -27,7 +30,7 @@ class TestClient(unittest.TestCase):
     def setUp(self):
         self.logger = logging.getLogger(__name__)
         self.loop = asyncio.get_event_loop()
-        Client.BASE_URL = 'https://playground.dutycalls.me/api'
+        Client.BASE_URL = 'https://dutycalls.me/api'
 
     def test_client_init(self):
         client = Client(login=_LOGIN, password=_PASSWORD)
@@ -41,13 +44,13 @@ class TestClient(unittest.TestCase):
             'dateTime': int(time.time()),
             'severity': 'low',
             'sender': 'DutyCalls SDK Test',
-        }, 'Test'))
+        }, _CHANNEL_NAME))
         self.assertEqual(len(tickets), 1)
         ticket = tickets[0]
         self.assertIsInstance(ticket, dict)
         ticket_sid = ticket['sid']
         self.assertIsInstance(ticket_sid, str)
-        self.assertEqual(ticket['channel'], 'Test')
+        self.assertEqual(ticket['channel'], _CHANNEL_NAME)
         try:
             self.loop.run_until_complete(client.close_tickets(ticket_sid))
         except Exception:
@@ -61,7 +64,7 @@ class TestClient(unittest.TestCase):
             'dateTime': int(time.time()),
             'severity': 'low',
             'sender': 'DutyCalls SDK Test',
-        }, 'Test', 'xxx'))
+        }, _CHANNEL_NAME, _CHANNEL_NAME))
         self.assertEqual(len(tickets), 2)
         ticket_sids = (ticket['sid'] for ticket in tickets)
         try:
@@ -77,7 +80,7 @@ class TestClient(unittest.TestCase):
             'dateTime': int(time.time()),
             'severity': 'low',
             'sender': 'DutyCalls SDK Test',
-        }, 'Test'))
+        }, _CHANNEL_NAME))
         ticket = tickets[0]
         ticket_sid = ticket['sid']
         res = self.loop.run_until_complete(client.close_tickets(
@@ -88,9 +91,37 @@ class TestClient(unittest.TestCase):
         if not _UNACK_TICKET_SID:
             return
         client = Client(login=_LOGIN, password=_PASSWORD)
-        res = self.loop.run_until_complete(client.unacknowledge_ticket(
+        res = self.loop.run_until_complete(client.unacknowledge_tickets(
             _UNACK_TICKET_SID,
             comment='unacknowledged using the DutyCalls SDK'))
+        self.assertIs(res, None)
+
+    def test_get_ticket(self):
+        if not _UNACK_TICKET_SID:
+            return
+        client = Client(login=_LOGIN, password=_PASSWORD)
+        tickets = self.loop.run_until_complete(client.get_tickets(
+            _UNACK_TICKET_SID))
+        self.assertEqual(len(tickets), 1)
+        ticket = tickets[0]
+        self.assertIsInstance(ticket, dict)
+        ticket_sid = ticket['sid']
+        self.assertIsInstance(ticket_sid, str)
+        self.assertEqual(ticket_sid, _UNACK_TICKET_SID)
+
+    def test_new_ticket_hit(self):
+        if not _UNACK_TICKET_SID:
+            return
+        client = Client(login=_LOGIN, password=_PASSWORD)
+        res = self.loop.run_until_complete(client.new_ticket_hit({
+            'summary': 'This is a summary',
+            'timestamp': int(time.time()),
+            'ticketProperties': {
+                'severity': 'low',
+                'links': ['https://google.com'],
+            }
+        }, _UNACK_TICKET_SID))
+        self.assertIs(res, None)
 
     def test_invalid_channel(self):
         client = Client(login=_LOGIN, password=_PASSWORD)
@@ -117,7 +148,7 @@ class TestClient(unittest.TestCase):
                 'dateTime': int(time.time()),
                 'severity': 'low',
                 'sender': 'DutyCalls SDK Test',
-            }, 'Test'))
+            }, _CHANNEL_NAME))
 
     def test_invalid_ticket(self):
         client = Client(login=_LOGIN, password=_PASSWORD)
@@ -130,4 +161,4 @@ class TestClient(unittest.TestCase):
                 'dateTime': '2020-10-01',
                 'severity': 'low',
                 'sender': 'DutyCalls SDK Test',
-            }, 'Test'))
+            }, _CHANNEL_NAME))
