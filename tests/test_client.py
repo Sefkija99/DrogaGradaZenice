@@ -20,7 +20,7 @@ _PASSWORD = os.environ.get('DUTYCALLS_PASSWORD')
 
 # A channel name. Used for testing ticket creation.
 _CHANNEL_1 = os.environ.get('DUTYCALLS_CHANNEL_1', 'Test')
-_CHANNEL_2 = os.environ.get('DUTYCALLS_CHANNEL_1', 'xxx')
+_CHANNEL_2 = os.environ.get('DUTYCALLS_CHANNEL_2', 'xxx')
 
 # A ticket SID. Used for several tests.
 _UNACK_TICKET_SID = os.environ.get('DUTYCALLS_TICKET_SID')
