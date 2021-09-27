@@ -97,23 +97,40 @@ class TestClient(unittest.TestCase):
             comment='unacknowledged using the DutyCalls SDK'))
         self.assertIs(res, None)
 
+    def _create_ticket(self, client, title):
+        tickets = self.loop.run_until_complete(client.new_ticket({
+            'title': title,
+            'body': 'Just some plain text...',
+            'dateTime': int(time.time()),
+            'severity': 'low',
+            'sender': 'DutyCalls SDK Test',
+        }, _CHANNEL_1))
+        self.assertEqual(len(tickets), 1)
+        ticket = tickets[0]
+        self.assertIsInstance(ticket, dict)
+        return ticket['sid']
+
     def test_get_ticket(self):
-        if not _UNACK_TICKET_SID:
-            return
         client = Client(login=_LOGIN, password=_PASSWORD)
+
+        # create a ticket...
+        expected_sid = self._create_ticket(client, 'Test to get a ticket')
+
         tickets = self.loop.run_until_complete(client.get_tickets(
-            _UNACK_TICKET_SID))
+            expected_sid))
         self.assertEqual(len(tickets), 1)
         ticket = tickets[0]
         self.assertIsInstance(ticket, dict)
         ticket_sid = ticket['sid']
         self.assertIsInstance(ticket_sid, str)
-        self.assertEqual(ticket_sid, _UNACK_TICKET_SID)
+        self.assertEqual(ticket_sid, expected_sid)
 
     def test_new_ticket_hit(self):
-        if not _UNACK_TICKET_SID:
-            return
         client = Client(login=_LOGIN, password=_PASSWORD)
+
+        # create a ticket...
+        expected_sid = self._create_ticket(client, 'Test a ticket hit')
+
         res = self.loop.run_until_complete(client.new_ticket_hit({
             'summary': 'This is a summary',
             'timestamp': int(time.time()),
@@ -121,7 +138,7 @@ class TestClient(unittest.TestCase):
                 'severity': 'low',
                 'links': ['https://google.com'],
             }
-        }, _UNACK_TICKET_SID))
+        }, expected_sid))
         self.assertIs(res, None)
 
     def test_invalid_channel(self):
