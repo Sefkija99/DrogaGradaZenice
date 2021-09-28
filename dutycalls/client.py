@@ -11,8 +11,8 @@ curl -X POST "https://dutycalls.me/api/ticket?channel=test"
 import json
 import logging
 import os
-from aiohttp import ClientSession, ClientResponse, BasicAuth
-from aiohttp.hdrs import METH_POST, METH_PUT
+from aiohttp import ClientSession, BasicAuth
+from aiohttp.hdrs import METH_POST, METH_PUT, METH_GET
 from typing import Optional
 from .errors import DutyCallsRequestError, DutyCallsAuthError
 
@@ -53,7 +53,7 @@ class Client:
                     url=url,
                     headers=self._headers,
                     params=params,
-                    data=data) as resp:
+                    data=data if method != METH_GET else None) as resp:
                 if resp.status in (200, 201):
                     return await resp.json()
                 if resp.status == 204:
@@ -72,7 +72,8 @@ class Client:
                 raise DutyCallsRequestError(errmsg)
 
     async def new_ticket(self, ticket: dict, *channels: str, ) -> dict:
-        """Create a new ticket and assign the ticket to a single channel."""
+        """Create a new ticket and assign the ticket to one or multiple
+        channel(s)."""
         res = await self._make_api_call(
             api='ticket',
             method=METH_POST,
@@ -85,13 +86,13 @@ class Client:
             self,
             *ticket_sids: str,
             comment: Optional[str] = None) -> None:
-        """Close one or more a ticket(s)."""
+        """Close one or multiple ticket(s)."""
         data = {'status': 'closed'}
         if comment:
             data['comment'] = comment
 
         return await self._make_api_call(
-            api='ticket',
+            api='ticket/status',
             method=METH_PUT,
             params=[('sid', ticket_sid) for ticket_sid in ticket_sids],
             data=data)
@@ -100,13 +101,34 @@ class Client:
             self,
             *ticket_sids: str,
             comment: Optional[str] = None) -> None:
-        """Unacknowledge one or more ticket(s)."""
+        """Unacknowledge one or multiple ticket(s)."""
         data = {'status': 'unacknowledged'}
         if comment:
             data['comment'] = comment
 
         return await self._make_api_call(
-            api='ticket',
+            api='ticket/status',
             method=METH_PUT,
             params=[('sid', ticket_sid) for ticket_sid in ticket_sids],
             data=data)
+
+    async def get_tickets(
+            self,
+            *ticket_sids: str) -> dict:
+        """Return one or multiple ticket(s)."""
+        res = await self._make_api_call(
+            api='ticket',
+            method=METH_GET,
+            params=[('sid', ticket_sid) for ticket_sid in ticket_sids])
+        return res['tickets']
+
+    async def new_ticket_hit(
+            self,
+            hit: dict,
+            *ticket_sids: str, ) -> dict:
+        """Create a new hit and assign the hit to one or multiple ticket(s)."""
+        return await self._make_api_call(
+            api='ticket/hit',
+            method=METH_POST,
+            params=[('sid', ticket_sid) for ticket_sid in ticket_sids],
+            data=hit)
