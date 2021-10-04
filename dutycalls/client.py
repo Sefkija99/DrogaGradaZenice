@@ -125,10 +125,20 @@ class Client:
     async def new_ticket_hit(
             self,
             hit: dict,
-            *ticket_sids: str, ) -> dict:
+            *ticket_sids: str) -> dict:
         """Create a new hit and assign the hit to one or multiple ticket(s)."""
         return await self._make_api_call(
             api='ticket/hit',
             method=METH_POST,
             params=[('sid', ticket_sid) for ticket_sid in ticket_sids],
             data=hit)
+
+    async def get_ticket_hits(
+            self,
+            ticket_sid: str) -> dict:
+        """Retrieve the hits of a given ticket."""
+        res = await self._make_api_call(
+            api='ticket/hit',
+            method=METH_GET,
+            params=[('sid', ticket_sid)])
+        return res['hits']

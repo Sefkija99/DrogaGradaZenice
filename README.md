@@ -14,6 +14,7 @@ DutyCalls SDK for the Python language.
   - [Unacknowledge tickets](#unacknowledge-tickets)
   - [Get tickets](#get-tickets)
   - [New ticket hit](#new-ticket-hit)
+  - [Get ticket hits](#get-ticket-hits)
 
 ---
 
@@ -21,7 +22,7 @@ DutyCalls SDK for the Python language.
 
 The easiest way is to use PyPI:
 
-```
+```bash
 pip install dutycalls_sdk
 ```
 
@@ -182,6 +183,31 @@ await client.new_ticket_hit(
             "severity": "high"
         }
     },
+    'aiBzfnJlYWN0LWZpcmViYXNlLWF1dGhlbnRpYy1lNGU3NHIdCxIHY2hhbm5lbBiwhAUMCxIGdGlja2V0GPODDAyiAQpwcm9kdWN0aW9u'
+)
+```
+
+### Get ticket hits
+
+Retrieve the hits of a ticket in DutyCalls.
+
+#### Return value
+
+```python
+[
+    {
+        "unix_time": 1633085094,
+        "unix_received_time": 1633085094,
+        "summary": "This is the summary of the ticket."
+    }
+]
+```
+
+#### Example
+
+```python
+# Returns the hits of a given ticket.
+await client.get_ticket_hits(
     'aiBzfnJlYWN0LWZpcmViYXNlLWF1dGhlbnRpYy1lNGU3NHIdCxIHY2hhbm5lbBiwhAUMCxIGdGlja2V0GPODDAyiAQpwcm9kdWN0aW9u'
 )
 ```

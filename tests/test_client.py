@@ -141,6 +141,29 @@ class TestClient(unittest.TestCase):
         }, expected_sid))
         self.assertIs(res, None)
 
+    def test_new_ticket_hit(self):
+        client = Client(login=_LOGIN, password=_PASSWORD)
+
+        # create a ticket...
+        expected_sid = self._create_ticket(client, 'Test a ticket hit')
+
+        summary = 'This is a test!'
+
+        res = self.loop.run_until_complete(client.new_ticket_hit({
+            'summary': summary,
+            'timestamp': int(time.time()),
+            'ticketProperties': {
+                'severity': 'low',
+                'links': ['https://google.com'],
+            }
+        }, expected_sid))
+        self.assertIs(res, None)
+
+        hits = self.loop.run_until_complete(
+            client.get_ticket_hits(expected_sid)
+        )
+        self.assertEqual(hits[0]['summary'], summary)
+
     def test_invalid_channel(self):
         client = Client(login=_LOGIN, password=_PASSWORD)
         with self.assertRaisesRegex(
