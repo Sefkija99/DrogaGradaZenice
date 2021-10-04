@@ -14,6 +14,7 @@ DutyCalls SDK for the Python language.
   - [Unacknowledge tickets](#unacknowledge-tickets)
   - [Get tickets](#get-tickets)
   - [New ticket hit](#new-ticket-hit)
+  - [Get ticket hits](#get-ticket-hits)
 
 ---
 
