@@ -133,7 +133,7 @@ class TestClient(unittest.TestCase):
 
         res = self.loop.run_until_complete(client.new_ticket_hit({
             'summary': 'This is a summary',
-            'timestamp': int(time.time()),
+            'timestamp': int(time.time())*1000,
             'ticketProperties': {
                 'severity': 'low',
                 'links': ['https://google.com'],
@@ -151,7 +151,7 @@ class TestClient(unittest.TestCase):
 
         res = self.loop.run_until_complete(client.new_ticket_hit({
             'summary': summary,
-            'timestamp': int(time.time()),
+            'timestamp': int(time.time()*1000),
             'ticketProperties': {
                 'severity': 'low',
                 'links': ['https://google.com'],
