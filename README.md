@@ -126,10 +126,10 @@ Return one or more ticket(s) in DutyCalls.
 ```python
     [
         {
-            "utc_time": 1632724764,
-            "utc_received_time": 1632724764,
-            "utc_acknowledged_time": null,
-            "utc_closed_time": null,
+            "timestamp": 1637764283043,
+            "received_timestamp": 1637764283043,
+            "acknowledged_timestamp": null,
+            "closed_timestamp": null,
             "title": "This is the title of the ticket.",
             "body": "This is the body of the ticket.",
             "body_type": "markdown",
@@ -177,7 +177,7 @@ None
 await client.new_ticket_hit(
     {
         "summary": "The summary.",
-        "timestamp": 1621951028,
+        "timestamp": 1637764283043,
         "ticketProperties": {
             "links": ["https://some-domain.com"],
             "severity": "high"
@@ -196,8 +196,8 @@ Retrieve the hits of a ticket in DutyCalls.
 ```python
 [
     {
-        "unix_time": 1633085094,
-        "unix_received_time": 1633085094,
+        "timestamp": 1637764283043,
+        "received_timestamp": 1637764283043,
         "summary": "This is the summary of the ticket."
     }
 ]
