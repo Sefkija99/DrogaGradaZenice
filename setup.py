@@ -26,7 +26,7 @@ setup(
     author_email='jeroen@transceptor.technology',
     license='MIT',
     classifiers=[
-        # How mature is this project? Common values are
+        # How mature is this project? Common values are:
         #   3 - Alpha
         #   4 - Beta
         #   5 - Production/Stable
@@ -53,6 +53,6 @@ setup(
     keywords='sdk connector',
 
     # You can just specify the packages manually here if your project is
-    # simple. Or you can use find_packages().
+    # simple. Or, you can use find_packages().
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
 )
