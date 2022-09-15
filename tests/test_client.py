@@ -169,7 +169,7 @@ class TestClient(unittest.TestCase):
         with self.assertRaisesRegex(
                 DutyCallsRequestError,
                 r'The channel with the name: Fake, does not exist '
-                r'or is not linked to the current source.'):
+                r'or is not linked to the current service.'):
             res = self.loop.run_until_complete(client.new_ticket({
                 'title': 'This is a test',
                 'body': 'Just some plain text...',
